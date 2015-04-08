@@ -8,7 +8,7 @@ require 'logger'
 Dotenv.load ".env.#{ENV['RACK_ENV']}", '.env'
 
 
-module App
+module Frest
   Config = OpenStruct.new
   
   class << self
@@ -27,6 +27,8 @@ module App
 
   Dir[root.join('config/initializers/**/*.rb')].each {|initializer| require initializer }
   $LOAD_PATH.unshift root.join('lib')
+  $LOAD_PATH.unshift root.join 'app', 'models'
+
   # Require the file in load path that matches the snake_case version of your App constant
   require to_s.gsub(/(\w)([A-Z])/, '\\1_\\2').downcase
 
