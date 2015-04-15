@@ -31,8 +31,8 @@ module.exports = {displayOptions: displayOptions};
 
 
 },{"./function_presenter.js":3,"rc-dialog":7,"rc-dialog/assets/bootstrap.css":6,"react":163}],2:[function(require,module,exports){
-"use strict";
-var uuid = require('node-uuid');
+"use strict"
+var uuid = require('node-uuid')
 var presenter = require('./function_presenter.js')
 var displayOptions = require('./display_options.js')
 
@@ -51,10 +51,12 @@ function getScript(url, data) {
 }
 
 function handleClick(evt) {
-  $('.fa-cog').toggle()
-  $('body > .fa-cog').show()
+  if ($(evt.target).hasClass('fa-cog')) {
+    $('.fa-cog').toggle()
+    $('body > .fa-cog').show()
 
-  showOptions(evt.target)
+    showOptions(evt.target)
+  }
 }
 
 $(function() {
@@ -406,7 +408,7 @@ module.exports = {
 
 
 },{}],6:[function(require,module,exports){
-var css = ".rc-dialog-wrap {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1040;\n  overflow: hidden;\n  overflow-scrolling: touch;\n  outline: 0;\n}\n.rc-dialog {\n  margin: 30px auto;\n  position: relative;\n}\n.rc-dialog-title {\n  margin-top: 10px;\n  margin-bottom: 10px;\n  font-size: 18px;\n}\n.rc-dialog-content {\n  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);\n  position: relative;\n  background-color: #fff;\n  background-clip: padding-box;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 6px;\n  outline: 0;\n}\n.rc-dialog-wrap-hidden {\n  display: none;\n}\n.rc-dialog-close {\n  cursor: pointer;\n  outline: none;\n  margin-top: -2px;\n  float: right;\n  font-size: 21px;\n  font-weight: 700;\n  line-height: 1;\n  color: #000;\n  text-shadow: 0 1px 0 #fff;\n  filter: alpha(opacity=20);\n  opacity: .2;\n  text-decoration: none;\n}\n.rc-dialog-close:hover {\n  opacity: 1;\n  filter: alpha(opacity=100);\n  text-decoration: none;\n}\n.rc-dialog-header {\n  min-height: 16.43px;\n  padding: 15px;\n  border-bottom: 1px solid #e5e5e5;\n}\n.rc-dialog-body {\n  overflow-y: auto;\n  padding: 15px;\n}\n.rc-dialog-mask {\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  background-color: #000;\n  height: 100%;\n  opacity: .5;\n  filter: alpha(opacity=50);\n}\n"; (require("/Users/gisborne/node_modules/browserify-css").createStyle(css, { "href": "../../../node_modules/rc-dialog/assets/bootstrap.css"})); module.exports = css;
+var css = ".rc-dialog-wrap {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1040;\n  overflow: hidden;\n  overflow-scrolling: touch;\n  outline: 0;\n}\n.rc-dialog {\n  margin: 30px auto;\n  position: relative;\n}\n.rc-dialog-title {\n  margin-top: 10px;\n  margin-bottom: 10px;\n  font-size: 18px;\n}\n.rc-dialog-content {\n  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);\n  position: relative;\n  background-color: #fff;\n  background-clip: padding-box;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 6px;\n  outline: 0;\n}\n.rc-dialog-wrap-hidden {\n  display: none;\n}\n.rc-dialog-close {\n  cursor: pointer;\n  outline: none;\n  margin-top: -2px;\n  float: right;\n  font-size: 21px;\n  font-weight: 700;\n  line-height: 1;\n  color: #000;\n  text-shadow: 0 1px 0 #fff;\n  filter: alpha(opacity=20);\n  opacity: .2;\n  text-decoration: none;\n}\n.rc-dialog-close:hover {\n  opacity: 1;\n  filter: alpha(opacity=100);\n  text-decoration: none;\n}\n.rc-dialog-header {\n  min-height: 16.43px;\n  padding: 15px;\n  border-bottom: 1px solid #e5e5e5;\n}\n.rc-dialog-body {\n  overflow-y: auto;\n  padding: 15px;\n}\n.rc-dialog-mask {\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  background-color: #000;\n  height: 100%;\n  opacity: .5;\n  filter: alpha(opacity=50);\n}\n"; (require("/Users/gisborne/node_modules/browserify-css").createStyle(css, { "href": "../../node_modules/rc-dialog/assets/bootstrap.css"})); module.exports = css;
 },{"/Users/gisborne/node_modules/browserify-css":4}],7:[function(require,module,exports){
 module.exports = require('./lib/Dialog');
 

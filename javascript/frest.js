@@ -1,5 +1,5 @@
-"use strict";
-var uuid = require('node-uuid');
+"use strict"
+var uuid = require('node-uuid')
 var presenter = require('./function_presenter.js')
 var displayOptions = require('./display_options.js')
 
@@ -18,10 +18,12 @@ function getScript(url, data) {
 }
 
 function handleClick(evt) {
-  $('.fa-cog').toggle()
-  $('body > .fa-cog').show()
+  if ($(evt.target).hasClass('fa-cog')) {
+    $('.fa-cog').toggle()
+    $('body > .fa-cog').show()
 
-  showOptions(evt.target)
+    showOptions(evt.target)
+  }
 }
 
 $(function() {
