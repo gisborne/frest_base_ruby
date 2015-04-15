@@ -1,9 +1,0 @@
-Merge branch 'yard' of https://github.com/colszowka/rack-boilerplate into frest
-
-# By Christoph Olszowka
-# Via Christoph Olszowka
-* 'yard' of https://github.com/colszowka/rack-boilerplate:
-  Allow generation of api documentation using yard  (https://github.com/lsegal/yard)
-
-Conflicts:
-	Gemfile
