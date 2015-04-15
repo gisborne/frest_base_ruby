@@ -1,42 +1,44 @@
+"use strict";
+var uuid = require('node-uuid');
+var presenter = require('./function_presenter.js')
+var displayOptions = require('./display_options.js')
+
+function showOptions(target) {
+  getScript(window.location, {id: target.id})
+}
+
+function getScript(url, data) {
+  $.ajax({
+    url: url,
+    dataType: 'script',
+    accept: 'application/javascript',
+    method: 'OPTIONS',
+    data: data
+  })
+}
+
+function handleClick(evt) {
+  $('.fa-cog').toggle()
+  $('body > .fa-cog').show()
+
+  showOptions(evt.target)
+}
+
 $(function() {
-  frest = frest || {}
-  function showOptions(target) {
-    $.ajax({
-      url: window.location,
-      dataType: 'script',
-      accept: 'application/javascript',
-      method: 'OPTIONS',
-      data: {
-        id: target.id}
-    })
-  }
-
-  function handleClick(evt) {
-    $('.fa-cog').toggle()
-    $('body > .fa-cog').show()
-
-    showOptions(evt.target)
-  }
 
   $('body').click(handleClick)
-
-  $.ajax({
-    url: window.location,
-    dataType: 'script',
-    accept: 'application/javascript'}
-  )
 
   function linkListPresenter() {
 
   }
 
-  frest.typePresenters = {
+  var typePresenters = {
 
-  }
-
-
-
-  frest.showOptions = function showOptions(opt) {
-    //top level is a hash of type of thing to its presenter
   }
 })
+
+module.exports = {
+  displayOptions: displayOptions.displayOptions,
+  present: presenter.present,
+  definePresenter: presenter.definePresenter
+}

@@ -1,12 +1,23 @@
 require 'functions'
 require 'predicate'
+require 'converters'
 
 class Namespace < ActiveRecord::Base
+  attr_accessor :ruby_functions, :named_functions, :fn_name_from_id
   belongs_to :parent, class_name: 'Namespace', inverse_of: :children
+  belongs_to :default_presenter, class_name: 'Predicate'
 
   has_many :children, class_name: 'Namespace', foreign_key: :parent_id, inverse_of:  :parent
 
   has_and_belongs_to_many :predicates
+
+  after_initialize :setup
+
+  def setup
+    @ruby_functions = {}
+    @named_functions = {}
+    @fn_name_from_id = {}
+  end
 
   def self.get_root
     Frest::RootNamespace
@@ -16,35 +27,8 @@ class Namespace < ActiveRecord::Base
     children.create id: id, name: name
   end
 
-  def upward_closure_ids
-    search_sql = <<SQL
-WITH RECURSIVE
-  ns AS
-(SElECT
-      id AS id,
-      parent_id,
-      ARRAY[id] AS upward
-    FROM
-      namespaces
-  UNION ALL
-    SELECT
-      ns.id,
-      n_parent.parent_id,
-      ns.upward || n_parent.id
-    FROM
-      ns JOIN
-      namespaces AS n_parent ON (ns.parent_id = n_parent.id)
-    WHERE
-      NOT n_parent.id = ANY(ns.upward))
-SELECT
-  upward
-FROM
-  ns
-WHERE
-  id = '#{self.id}'
-ORDER BY ARRAY_LENGTH(upward, 1) DESC LIMIT 1
-SQL
-    ActiveRecord::Base.connection.select_value(search_sql, [self.id])[1..-2].split(',')
+  def upward_closure
+    Namespace.where "id IN (SELECT UNNEST(upward) FROM namespace_upward WHERE id = ?)", [self.id]
   end
 
   def get_values *names
@@ -66,7 +50,9 @@ SQL
   end
 
   def handle req
-    req['wants_javascript'] = wants_javascript(req)
+    if req.options?
+      return handle_options req
+    end
 
     fn = Frest.get_function id
     fn.handle req, self && return if fn
@@ -77,8 +63,13 @@ SQL
     default_handle req
   end
 
+  def handle_options req
+    fns = get_functions
+    return 200, :options_list, {functions: fns}
+  end
+
   def default_handle req
-    ['200', {'Content-Type' => 'text/html'}, [Frest::Page]]
+    return '200', 'text/html', self
   end
 
   def self.find_and_handle id, req
@@ -89,9 +80,29 @@ SQL
 
   private
 
-  def wants_javascript req
-    accept = req.env['HTTP_ACCEPT']
-    accept.include?('javascript')
+  def get_functions
+    db_fns = get_db_fns
+    ruby_fns = get_ruby_fns
+
+    db_fns_hash = {}
+    db_fns.each do |f|
+      db_fns_hash[f.id] = f
+    end
+    db_fns_hash.merge ruby_fns
+  end
+
+  def get_db_fns
+    Predicate.get_functions namespace: self
+  end
+
+  def get_ruby_fns
+    fns = @ruby_functions
+
+    upward_closure.each do |ns|
+      fns << ns.ruby_functions
+    end
+
+    fns
   end
 
   def get_parent_values names

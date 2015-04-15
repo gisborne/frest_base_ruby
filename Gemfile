@@ -11,6 +11,7 @@ gem 'pg'
 
 group :development, :test do
   gem 'pry'
+  gem 'shotgun'
 end
 
 group :test do
