@@ -4,7 +4,17 @@ var presenter = require('./function_presenter.js')
 var displayOptions = require('./display_options.js')
 
 function showOptions(target) {
-  getScript(window.location, {id: target.id})
+  var req = $.ajax({
+      url: window.location,
+      dataType: 'json',
+      accept: 'text/json',
+      method: 'OPTIONS',
+      data: {id: target.id}
+    })
+
+  req.success(displayOptions.displayOptions)
+  req.fail(function(j, status, err) {
+    console.log("ERROR: " + status + "     " + err)})
 }
 
 function getScript(url, data) {

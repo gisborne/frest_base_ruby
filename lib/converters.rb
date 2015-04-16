@@ -11,8 +11,7 @@ module Frest
 
   class OptionsPresenter
     def call(target:, type:, req:)
-      [200, {'Content-Type' => 'text/html'}, ["
-          var json = #{target.to_json};frest.displayOptions(json)"]]
+      [200, {'Content-Type' => 'text/json'}, [target.to_json]]
     end
   end
 
