@@ -9,17 +9,37 @@ require('rc-dialog/assets/bootstrap.css');
 
 function displayOptions(opts) {
   function close() {
-    console.log('close');
   }
 
   function show() {
-    console.log('show');
   }
 
+  var CategoryTitle = React.createClass({displayName: "CategoryTitle",
+      render: function() {
+          return (React.createElement("span", {className: "category-title"}, this.props.category));
+      }
+  });
+
+  var Link = React.createClass({displayName: "Link",
+    render: function() {
+      return (React.createElement("a", {href: this.props.href}, this.props.text))
+    }
+  })
+  var Links = React.createClass({displayName: "Links",
+    render:function() {
+      var rows = []
+      var targets = this.props.targets
+      for (var index in targets) {
+        var title = targets[index].title
+        rows.push(React.createElement(Link, {href: '/' + index, key: index, text: title}))
+      }
+      return (React.createElement("div", null, rows))
+    }
+  })
 
   var dialog = React.render(
-        (React.createElement(Dialog, {title: "Options", onClose: close, onShow: show, style: {width: 500}}, 
-          React.createElement("p", null, "first dialog")
+        (React.createElement(Dialog, {title: "Possible actions", onClose: close, onShow: show, style: {width: 500}}, 
+          React.createElement(Links, {targets: opts.functions})
         )),
         document.getElementById('body-options')
     );
